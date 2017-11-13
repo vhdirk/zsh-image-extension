@@ -13,18 +13,9 @@ which contains the number of consumed arguments.
 from sys import argv
 import re
 import subprocess
-import itertools
+import shutil
 import os.path
 from os import getenv
-
-import sys, struct, fcntl, termios
-def get_terminal_size():
-    _, _, w, h = struct.unpack("HHHH",
-                               fcntl.ioctl(sys.stderr.fileno(), # stderr is not redirected, unlike stdout
-                                           termios.TIOCGWINSZ,
-                                           struct.pack("HHHH",
-                                                       0,0,0,0)))
-    return w, h
 
 
 def main():
@@ -44,7 +35,7 @@ def main():
 
     # calculate how many images we can fit horizontally
     if autodetect_size:
-        term_w, term_h = get_terminal_size()
+        term_w, term_h = shutil.get_terminal_size()
         term_h -= upper_margin
         images_in_row = term_w // (width + border)
         max_rows = term_h // (max_height + border)
